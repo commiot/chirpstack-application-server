@@ -4,6 +4,7 @@ package influxdb
 import (
 	"bytes"
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -229,8 +230,10 @@ func (i *Integration) SendDataUp(ctx context.Context, vars map[string]string, pl
 	}
 
 	log.WithFields(log.Fields{
-		"dev_eui": devEUI,
-		"ctx_id":  ctx.Value(logging.ContextIDKey),
+		"dev_eui":  devEUI,
+		"FramData": hex.EncodeToString(pl.Data),
+		"FCnt":     pl.FCnt,
+		"ctx_id":   ctx.Value(logging.ContextIDKey),
 	}).Info("integration/influxdb: uplink measurements written")
 
 	return nil
